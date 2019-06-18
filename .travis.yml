@@ -1,7 +1,6 @@
 language: python
 python:
   - "2.7"
-  - "3.4"
   - "3.5"
   - "3.6"
 sudo: false
@@ -38,7 +37,8 @@ install:
   # - conda install --yes -c dan_blanchard python-coveralls nose-cov
   - source activate test-environment
   - pip install coveralls
-  - "python setup.py build install"
+  - pip install pysat
+  - "python setup.py develop"
 # command to run tests
 script: 
   #- nosetests
