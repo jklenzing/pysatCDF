@@ -17,9 +17,10 @@ from subprocess import call
 # import setuptools
 
 
-# path to base CDF directory if CDF library already installed and you want to use it
-# leave to None to install CDF library
-# system will look for installed packed before installing a pysatCDF specific CDF install
+# path to base CDF directory if CDF library already installed and you want
+# to use it leave to None to install CDF library
+# system will look for installed packed before installing a pysatCDF
+# specific CDF install
 base_cdf = None
 
 # leave items below to None unless base_cdf set to something other than None
@@ -30,14 +31,12 @@ lib_name = None
 shared_lib_name = None
 
 # CDF compile options
-# note that the shared library name will be appended to extra_link_args automatically
+# note that the shared library name will be appended to extra_link_args
+# automatically
 extra_link_args = None
 # OS and ENV comes from CDF installation instructions
 os_name = None
 env_name = None
-
-# manual f2py command for Mac OS X
-# f2py -c --include-paths $CDF_INC -I$CDF_INC $CDF_LIB/libcdf.a -m fortran_cdf fortran_cdf.f -lm -lc
 
 # some solutions in creating this file come from
 # https://github.com/Turbo87/py-xcsoar/blob/master/setup.py
@@ -99,17 +98,17 @@ elif (platform == 'linux') | (platform == 'linux2'):
     env_name = 'gnu'
     lib_name = 'libcdf.a'
     shared_lib_name = None  # 'libcdf.so'
-    extra_link_args = ['-lm', '-lc']  # , '-Wl,-undefined', '-Wl,dynamic_lookup'] #'-export_dynamic']
+    extra_link_args = ['-lm', '-lc']
 elif (platform == 'win32'):
     os_name = 'mingw'
     env_name = 'gnu'
     lib_name = 'libcdf.a'
     shared_lib_name = None
-    # extra_link_args = ['/nodefaultlib:libcd']
-    extra_link_args = []  # , '-Wl,-undefined', '-Wl,dynamic_lookup'] #'-export_dynamic']
+    extra_link_args = []
 else:
     if (lib_name is None) or ((base_cdf is None) and ((os_name is None)
-                              or (env_name is None) or (extra_link_args is None))):
+                              or (env_name is None)
+                              or (extra_link_args is None))):
         raise ValueError('Unknown platform, please set setup.py parameters manually.')
 
 # CDF directory hasn't been specified by user, see if an installation can be found
