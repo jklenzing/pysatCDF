@@ -205,11 +205,13 @@ def CDF_build(self, ppath):
                            os.path.join(self.build_lib, 'pysatCDF', 'include'))
             self.mkpath(os.path.join(self.build_lib, 'pysatCDF', 'lib'))
             self.copy_file(os.path.join(ppath, 'lib', lib_name),
-                           os.path.join(self.build_lib, 'pysatCDF', 'lib', lib_name))
+                           os.path.join(self.build_lib, 'pysatCDF', 'lib',
+                                        lib_name))
 
             if shared_lib_name is not None:
                 self.copy_file(os.path.join(ppath, 'lib', shared_lib_name),
-                               os.path.join(self.build_lib, 'pysatCDF', 'lib', shared_lib_name))
+                               os.path.join(self.build_lib, 'pysatCDF', 'lib',
+                                            shared_lib_name))
 
     # run original build code
     # build.run(self)
@@ -225,25 +227,27 @@ class ExtensionBuild(build_src):
         lib_path = os.path.abspath(os.path.join(self.build_lib, 'pysatCDF'))
         # set directories for the CDF library installed with pysatCDF
         self.extensions[0].include_dirs = [os.path.join(lib_path, 'include')]
-        self.extensions[0].f2py_options = ['--include-paths', os.path.join(lib_path, 'include')]
-        self.extensions[0].extra_objects = [os.path.join(lib_path, 'lib', lib_name)]
+        self.extensions[0].f2py_options = ['--include-paths',
+                                           os.path.join(lib_path, 'include')]
+        self.extensions[0].extra_objects = [os.path.join(lib_path, 'lib',
+                                            lib_name)]
         # add shared library, if provided
         if shared_lib_name is not None:
-            self.extensions[0].extra_link_args.append(os.path.join(lib_path,
-                                                                   'lib',
-                                                                   shared_lib_name))
+            app_path = os.path.join(lib_path, 'lib', shared_lib_name)
+            self.extensions[0].extra_link_args.append(app_path)
 
         build_src.run(self)
         return
 
+
 # almost to building
 if not build_cdf_flag:
-    print (' '.join(('Using CDF installation at', base_cdf)))
+    print(' '.join(('Using CDF installation at', base_cdf)))
     f2py_cdf_include_path = os.path.join(base_cdf, 'include')
     f2py_cdf_lib_path = os.path.join(base_cdf, 'lib', lib_name)
     cmdclass = {}
 else:
-    print ('Building CDF for pysatCDF.')
+    print('Building CDF for pysatCDF.')
     cmdclass = {'build': CDFBuild,
                 'build_src': ExtensionBuild, }
     f2py_cdf_include_path = ''
@@ -256,7 +260,7 @@ ext1 = numpy.distutils.core.Extension(
     name='pysatCDF.fortran_cdf',
     sources=[os.path.join('pysatCDF', 'fortran_cdf.f')],
     include_dirs=[f2py_cdf_include_path],
-    f2py_options=['--include-paths', f2py_cdf_include_path],  # '--Wall', 'n', '--Wno-tabs', 'n'],
+    f2py_options=['--include-paths', f2py_cdf_include_path],
     extra_objects=[f2py_cdf_lib_path],
     extra_link_args=extra_link_args)
 
@@ -271,8 +275,8 @@ numpy.distutils.core.setup(
     ext_modules=[ext1, ],
     description='Simple NASA Common Data Format (CDF) File reader.',
     long_description=('pysatCDF is a reader for CDF files and provides '
-                      'additional support for exporting to pysat data formats (not required). '
-                      'The NASA CDF library is included.'),
+                      'additional support for exporting to pysat data formats '
+                      '(not required). The NASA CDF library is included.'),
     url='http://github.com/rstoneback/pysatCDF',
     # Author details
     author='Russell Stoneback',
